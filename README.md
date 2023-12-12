@@ -3,7 +3,7 @@ A sample for express web
 
 # Require
 1. Node version: 16.15.0
-2. Install FFMPEG first refer: https://phoenixnap.com/kb/ffmpeg-windows
+2. Install FFMPEG, refer: https://phoenixnap.com/kb/ffmpeg-windows
 
 # Run
 ### Open a terminal and run following command

@@ -1,0 +1,11 @@
+<% layout('layout') %>
+<section class="jumbotron text-center">
+    <div class="container">
+     <h1><%= title %></h1>
+     <h2><%= subtitle %></h2>
+     <p class="lead text-muted"><%= description %></p>
+     <%for(let i =0;i<img.length;i++){%>
+        <img src=<%= img[i] %> width="300" />
+    <%}%>
+    </div>
+</section>

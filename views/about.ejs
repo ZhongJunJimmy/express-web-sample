@@ -1,0 +1,29 @@
+<% layout('layout') %>
+
+<script type="text/javascript" src="static/js/jsmpeg.min.js"></script>
+
+<section class="jumbotron text-center">
+    <div class="container">
+     <h1><%= title %></h1>
+     <h2><%= subtitle %></h2>
+     <p class="lead text-muted"><%= description %></p>
+     <canvas id="canvas" width="960" height="480"></canvas>
+    </div>
+</section>
+
+
+<script type="text/javascript">
+    
+    player = new JSMpeg.Player('ws://localhost:9999', {
+      canvas: document.getElementById('canvas')
+    })
+
+    document.getElementById('canvas').addEventListener('click', function(){
+	if (player.isPlaying) {
+		player.pause();
+	}
+	else {
+		player.play();
+	}
+})
+</script>

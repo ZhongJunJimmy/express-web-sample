@@ -13,8 +13,8 @@ app.set("view engine", "ejs")
 app.get("/", function (req, res) {
     res.render("index", {
         title: "Index",
-        subtitle: "首頁",
-        description: "This is index page",
+        subtitle: "單圖顯示",
+        description: "Show a local photo in page.",
         img: "static/img/ghibli/chihiro007.jpg",
     })
 })
@@ -26,18 +26,49 @@ app.get("/product", function (req, res) {
     })
     // console.log(images)
     res.render("product", {
-        title: "Products",
-        subtitle: "產品介紹",
-        description: `Something short and leading about the collection below—its contents, the creator, etc.Make it short and sweet, but not too short so folks don’ t simply skip over it entirely.`,
+        title: "Multi Photo",
+        subtitle: "多圖顯示",
+        description: `Show multi photo from local files in page.`,
         img: images,
     })
 })
 app.get("/about", function (req, res) {
     res.render("about", {
-        title: "About",
-        subtitle: "產品介紹",
-        description: `Something short and leading about the collection below—its contents, the creator, etc.Make it short and sweet, but not too short so folks don’ t simply skip over it entirely.`,
+        title: "RTSP Stream",
+        subtitle: "RTSP串流播放",
+        description: `Play video from RTSP stream in page.`,
     })
+})
+
+app.get("/video", function (req, res) {
+    res.render("video", {
+        title: "Video",
+        subtitle: "影片",
+        description: `Play video from local files in page.`,
+    })
+})
+
+app.get("/displayVideo", function (req, res) {
+    var range = req.headers.range
+    if (!range) {
+        // res.status(400).send("Requires Range header")
+        range = "200-1000"
+    }
+    const videoPath = __dirname + "/public/video/video.mp4"
+    const videoSize = fs.statSync(__dirname + "/public/video/video.mp4").size
+    const CHUNK_SIZE = 10 ** 6
+    const start = Number(range.replace(/\D/g, ""))
+    const end = Math.min(start + CHUNK_SIZE, videoSize - 1)
+    const contentLength = end - start + 1
+    const headers = {
+        "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+        "Accept-Ranges": "bytes",
+        "Content-Length": contentLength,
+        "Content-Type": "video/mp4",
+    }
+    res.writeHead(206, headers)
+    const videoStream = fs.createReadStream(videoPath, { start, end })
+    videoStream.pipe(res)
 })
 
 let port = 3000

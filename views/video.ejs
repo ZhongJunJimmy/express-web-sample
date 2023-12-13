@@ -1,0 +1,11 @@
+<% layout('layout') %>
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1><%= title %></h1>
+        <h2><%= subtitle %></h2>
+        <p class="lead text-muted"><%= description %></p>
+        <video id="videoPlayer" width="50%" controls muted="muted" autoplay>
+            <source src="/displayVideo" type="video/mp4" />
+        </video>
+    </div>
+</section>

@@ -1,7 +1,7 @@
 Stream = require("node-rtsp-stream")
 stream = new Stream({
     name: "",
-    streamUrl: "rtsp://37.157.51.30/axis-media/media.amp", //rtsp url
+    streamUrl: "rtsp://77.110.228.219/axis-media/media.amp", //rtsp url
     wsPort: 9999,
     ffmpegOptions: {
         // options ffmpeg flags

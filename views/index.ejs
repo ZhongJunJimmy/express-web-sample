@@ -5,5 +5,34 @@
      <h2><%= subtitle %></h2>
      <p class="lead text-muted"><%= description %></p>
      <img src=<%= img %>  width="800" />
+
+     
+     <input id="date" type="date">
+     <input id="time" >
+     <button id="sumit">sumit</button>
     </div>
 </section>
+
+<script>
+    
+
+    var button = document.getElementById("sumit");
+    button.addEventListener("click", func);
+
+    function func() {
+      //var date = document.getElementById("date").value
+      //var time = document.getElementById("time").value
+      fetch(`https://api.thingspeak.com/channels/2383910/feeds.json?api_key=EODWD13NJLILMFV3&results=2`)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                console.log(myJson.feeds);
+                console.log(myJson.feeds[0]);
+                console.log(myJson.feeds[0].field1);
+                console.log(myJson.feeds[0].field2);
+                document.getElementById("time").value = myJson.feeds[0].field1
+            });
+
+    }
+</script>

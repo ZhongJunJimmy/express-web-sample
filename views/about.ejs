@@ -7,9 +7,10 @@
      <h1><%= title %></h1>
      <h2><%= subtitle %></h2>
      <p class="lead text-muted"><%= description %></p>
-     <canvas id="canvas" width="640" height="480"></canvas>
+     <canvas id="canvas"></canvas>
     </div>
 </section>
+
 
 
 <script type="text/javascript">
@@ -19,11 +20,11 @@
     })
 
     document.getElementById('canvas').addEventListener('click', function(){
-	if (player.isPlaying) {
-		player.pause();
-	}
-	else {
-		player.play();
-	}
-})
+    if (player.isPlaying) {
+      player.pause();
+    }
+    else {
+      player.play();
+    }
+  })
 </script>

@@ -5,12 +5,24 @@ let express = require("express")
 let engine = require("ejs-locals")
 //載入ejs-locals 模組
 let app = express()
+// Stream = require("node-rtsp-stream")
+// stream = new Stream({
+//     name: "",
+//     streamUrl: "rtsp://37.157.51.30/axis-media/media.amp", //rtsp url
+//     wsPort: 9999,
+//     ffmpegOptions: {
+//         // options ffmpeg flags
+//         "-stats": "", // an option with no neccessary value uses a blank string
+//         "-r": 30, // options with required values specify the value after the key
+//     },
+// })
 // 使用express
 app.engine("ejs", engine)
 app.use("/static", express.static(__dirname + "/public"))
 app.set("views", "./views")
 app.set("view engine", "ejs")
 app.get("/", function (req, res) {
+    
     res.render("index", {
         title: "Index",
         subtitle: "單圖顯示",
@@ -24,7 +36,7 @@ app.get("/product", function (req, res) {
     fs.readdirSync(imageFolder).forEach((fileName) => {
         images.push(`static/img/ghibli/${fileName}`)
     })
-    // console.log(images)
+    console.log(images)
     res.render("product", {
         title: "Multi Photo",
         subtitle: "多圖顯示",
@@ -48,23 +60,41 @@ app.get("/video", function (req, res) {
     })
 })
 
+
+app.get("/test", function (req, res) {
+    console.log(req.query)
+    res.render("video", {
+        title: req.query.a,
+        subtitle: "影片",
+        description: `Play video from local files in page.`,
+    })
+})
+
+app.get("/test2", function (req, res) {
+    console.log(req.query)
+    req.query.datetime
+})
+
 app.get("/displayVideo", function (req, res) {
     var range = req.headers.range
+    console.log(req.headers)
     if (!range) {
-        // res.status(400).send("Requires Range header")
-        range = "200-1000"
+        //res.status(400).send("Requires Range header")
+        //range = "200-1000"
     }
-    const videoPath = __dirname + "/public/video/video.mp4"
-    const videoSize = fs.statSync(__dirname + "/public/video/video.mp4").size
+    const videoPath = __dirname + "/public/video/video2.avi"
+    const videoSize = fs.statSync(videoPath).size
     const CHUNK_SIZE = 10 ** 6
     const start = Number(range.replace(/\D/g, ""))
+    console.log(start)
     const end = Math.min(start + CHUNK_SIZE, videoSize - 1)
+    console.log(end)
     const contentLength = end - start + 1
     const headers = {
         "Content-Range": `bytes ${start}-${end}/${videoSize}`,
         "Accept-Ranges": "bytes",
         "Content-Length": contentLength,
-        "Content-Type": "video/mp4",
+        "Content-Type": "video/x-msvideo",
     }
     res.writeHead(206, headers)
     const videoStream = fs.createReadStream(videoPath, { start, end })
